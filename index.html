@@ -1172,6 +1172,260 @@ footer {
   .tl-grid { grid-template-columns: 120px 1fr; }
   .tl-label-name { font-size: 0.78rem; }
 }
+
+/* ════════════ ERA TOOL OVERLAY ════════════ */
+#era-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: var(--paper-0);
+  flex-direction: column;
+  overflow: hidden;
+}
+#era-overlay.on { display: flex; }
+
+.era-hd {
+  flex-shrink: 0;
+  padding: 0.9rem 1.5rem 0.75rem;
+  border-bottom: 1px solid var(--ruled);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.era-hd-left {}
+.era-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-4);
+  margin-bottom: 0.25rem;
+}
+.era-hd-title {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--text);
+  line-height: 1;
+}
+.era-hd-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.era-question {
+  font-family: var(--ff-zh);
+  font-size: 0.65rem;
+  color: var(--text-3);
+  text-align: right;
+  max-width: 14rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+.era-close {
+  background: none;
+  border: 1px solid var(--ruled);
+  color: var(--text-3);
+  font-family: var(--ff-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.era-close:hover { color: var(--gold); border-color: var(--gold); }
+
+/* Theme pills */
+.era-theme-bar {
+  flex-shrink: 0;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 0.4rem;
+  padding: 0.55rem 1.2rem;
+  border-bottom: 1px solid var(--ruled);
+  background: var(--paper-1);
+}
+.era-theme-bar::-webkit-scrollbar { display: none; }
+.era-tpill {
+  flex-shrink: 0;
+  padding: 0.28rem 0.8rem;
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  border: 1px solid var(--ruled);
+  color: var(--text-3);
+  background: none;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.era-tpill:hover { color: var(--text-2); border-color: var(--text-2); }
+.era-tpill.on { color: var(--gold); border-color: var(--gold); background: var(--gold-dim); }
+
+/* Era tabs */
+.era-tab-bar {
+  flex-shrink: 0;
+  display: flex;
+  border-bottom: 1px solid var(--ruled);
+}
+.era-etab {
+  flex: 1;
+  padding: 0.6rem 0.3rem 0.55rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  border-right: 1px solid var(--ruled);
+  transition: background 0.15s;
+  position: relative;
+}
+.era-etab:last-child { border-right: none; }
+.era-etab:hover { background: rgba(255,255,255,0.02); }
+.era-etab.on { background: rgba(255,255,255,0.03); }
+.era-etab.on::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--era-ec, var(--gold));
+}
+.era-etab-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-4);
+  transition: all 0.2s;
+}
+.era-etab.on .era-etab-dot {
+  background: var(--era-ec, var(--gold));
+  transform: scale(1.5);
+}
+.era-etab-label {
+  font-family: var(--ff-zh);
+  font-size: 0.65rem;
+  color: var(--text-3);
+  transition: color 0.2s;
+}
+.era-etab.on .era-etab-label { color: var(--text-2); }
+.era-etab-yr {
+  font-family: var(--ff-mono);
+  font-size: 0.44rem;
+  color: var(--text-4);
+  letter-spacing: 0.04em;
+}
+
+/* Main area */
+.era-main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image */
+.era-img-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: #080807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.era-artwork-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  display: block;
+}
+.era-artwork-img.in { opacity: 1; }
+.era-img-cap {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0.7rem 1.2rem 0.8rem;
+  background: linear-gradient(transparent, rgba(8,8,7,0.92));
+  pointer-events: none;
+}
+.era-img-cap-title {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--text-2);
+  margin-bottom: 0.1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.era-img-cap-meta {
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+}
+
+/* Info panel */
+.era-info {
+  flex-shrink: 0;
+  border-top: 1px solid var(--ruled);
+  background: var(--paper-1);
+}
+.era-info-inner {
+  padding: 0.85rem 1.5rem 1rem;
+}
+.era-theme-label {
+  font-family: var(--ff-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.era-desc {
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--text-2);
+  margin-bottom: 0.7rem;
+}
+.era-divider { height: 1px; background: var(--ruled); margin-bottom: 0.65rem; }
+.era-artist-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.2rem;
+}
+.era-artist-name {
+  font-family: var(--ff-serif);
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.era-artist-meta {
+  font-family: var(--ff-mono);
+  font-size: 0.48rem;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+}
+.era-artist-intro {
+  font-size: 0.7rem;
+  color: var(--text-3);
+  line-height: 1.55;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.era-fade { animation: eraFadeIn 0.3s ease; }
+@keyframes eraFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
 </style>
 </head>
 <body>
@@ -1192,6 +1446,7 @@ footer {
       <div class="view-tabs">
         <button class="vtab active" id="vtab-grid" onclick="setView('grid')">卡片视图</button>
         <button class="vtab" id="vtab-tl" onclick="setView('tl')">时间轴</button>
+        <button class="vtab" id="vtab-era" onclick="openEra()">时代对比</button>
       </div>
     </div>
 
@@ -5325,8 +5580,111 @@ function doCopy(id, btn) {
 
 /* ── Keyboard ── */
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeLightbox(); closeModal(); closeXHS(); }
+  if (e.key === 'Escape') { closeLightbox(); closeModal(); closeXHS(); closeEra(); }
 });
+
+
+/* ── Era Tool ── */
+const ERA_ERAS   = [{"label": "先驱期", "years": "1950s–60s", "color": "#9982d4"}, {"label": "数字化时代", "years": "1970s–90s", "color": "#4a9aaa"}, {"label": "网络时代", "years": "2000s–10s", "color": "#c9a84c"}, {"label": "AI时代", "years": "2020s—", "color": "#d4826a"}];
+const ERA_THEMES = [{"name": "机器有多自由", "question": "机器越来越自由——那人类还在创作什么？", "eras": [{"name": "Frieder Nake", "nat": "德国", "birth": "2026", "intro": "弗里德尔·纳克是德国数学家和数字艺术先驱，从1960年代初便开始创作算法绘图，是最早将计算机用于艺术的人之一。他的工作横跨计算机科学与艺术理论，塑造了生成艺术的理论基础。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Random_Polygon_Frieder_Nake_11102025.png?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762805014&s=c8da6bf61f9f656de92dca3b11f28f7b", "imgTitle": "Random Polygon", "imgMeta": "Frieder Nake · 1965 · 绘图仪", "theme": "机器是工具", "desc": "每一条线都由数学方程严格决定。没有随机，没有意外。艺术家写下指令，机器完美执行——连偏差都不被允许。"}, {"name": "Manfred Mohr", "nat": "德国", "birth": "2026", "intro": "曼弗雷德·莫尔是数字与算法艺术的先驱，通过数学规则和计算机编程创作精确的几何构图，从1960年代起系统探索超立方体（n维立方体）的视觉可能性，以简约的数学语言构建令人着迷的视觉宇宙", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Theoretical_Space_Projection_Manfred_Mohr_11102025.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762805211&s=876aa1cd25c3553a662a66fe21b8f44c", "imgTitle": "Theoretical Space Projection", "imgMeta": "Manfred Mohr · 1973 · 算法绘图", "theme": "机器有了意外", "desc": "随机参数第一次被引入。四维立方体在三维空间的投影有无数种可能——机器在规则内「选择」，每次运行结果不同。"}, {"name": "Casey Reas", "nat": "美国", "birth": "2004", "intro": "凯西·雷亚斯是美国艺术家，以软件为媒介，编写实时生成图像的系统——这些图像在画面组合、分解和重构的过程中不断演变。他与本·弗莱共同创建了Processing编程语言。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Process_Compendium_2004%E2%80%942010_A_Casey_Reas_11102025_2026-03-21-021652_encc.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1774059412&s=fb2333ca97173f93a93971f6c62e97ca", "imgTitle": "Process Compendium 2004–2010", "imgMeta": "Casey Reas · 2004 · 生成软件", "theme": "机器有了进化", "desc": "软件像生命体一样运行。每个元素遵循简单规则，却涌现出复杂的有机形态。没有人预见这个结果——包括艺术家本人。"}, {"name": "Memo Akten", "nat": "土耳其", "birth": "2025", "intro": "梅莫·阿克滕是艺术家兼研究者，探索技术如何影响我们对自然、意识与仪式的理解。他以工程和计算机科学为背景，创作反思感知、信仰以及人类与机器不断演变关系的算法系统、装置与表演。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/autopoeisic_transmogrification_fragment_003_Memo_Akten_11102025.png?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1774058801&s=31522b9e8215a5866782e8df3ea702be", "imgTitle": "Autopoeisic Transmogrification", "imgMeta": "Memo Akten · 2021 · 神经网络", "theme": "机器有了想象力", "desc": "神经网络在数十亿图像上训练，生成从未存在过的幻象。艺术家给出方向，机器给出一切。创作主体的边界彻底模糊。"}]}, {"name": "从实验室到客厅", "question": "门槛消失之后，稀缺性在哪里？", "eras": [{"name": "Georg Nees", "nat": "德国", "birth": "1926", "intro": "格奥尔格·尼斯是德国数学家和计算机艺术先驱，1960年代成为最早公开展示算法生成图像的艺术家之一，与弗里德尔·纳克并肩开创了计算机艺术的历史。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Kugel_in_einer_Kugel_Sphere_in_a_Sphere_Georg_Nees_11102025.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762805042&s=dbd8306a38df08b3df4f076289cfc29e", "imgTitle": "Kugel in einer Kugel", "imgMeta": "Georg Nees · 1970 · 西门子实验室", "theme": "只在实验室里", "desc": "西门子大型机占满整个房间，每次运行耗费数小时。只有工程师才能接触。这张图的诞生需要机构资源和专业培训。"}, {"name": "Vera Molnár", "nat": "匈牙利", "birth": "2026", "intro": "薇拉·莫尔纳将几何形式转化为一种扰动的语言——她用规则构建秩序，又刻意打破它，从而揭示新的形式。她毕生在系统与直觉之间展开对话，是最早证明机器可以延伸人类想象力的艺术家之一。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Untitled_Plotter_Vera_Molna%CC%81r_Franc%CC%A7ois_Molna%CC%81r_11102025_2026-03-21-021659_wvpr.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1774059419&s=919a118747319dd42d78967eec8c0ed8", "imgTitle": "Untitled Plotter Drawing", "imgMeta": "Vera Molnár · 1974 · 大学绘图仪", "theme": "进入大学", "desc": "绘图仪开始出现在艺术学院。Vera Molnár 在巴黎借用计算机创作——不是她的机器，借用，预约，等待排队。"}, {"name": "Roman Verostko", "nat": "美国", "birth": "1929", "intro": "罗曼·韦罗斯科的作品以定制算法、手工编码系统和改造的绘图仪创作，这些绘图仪如同艺术家手的延伸，是「算法艺术运动」的创始成员，将精神修行与代码哲学融为一体。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Tree_Roman_Verostko_11102025.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762805250&s=a840cf4b23386f081577a1e454cc1cd8", "imgTitle": "Tree", "imgMeta": "Roman Verostko · 2000 · 个人工作室", "theme": "进入工作室", "desc": "个人电脑让艺术家在自己的工作室创作。Roman Verostko 购买了自己的绘图仪，改装笔头，夜以继日地运行程序。"}, {"name": "Kim Asendorf", "nat": "德国", "birth": "2025", "intro": "金·阿森多夫是一位数字艺术家，对像素级操控的探索帮助界定了生成艺术与故障艺术领域。他发明的像素排序算法引入了一种全新的视觉语言，至今持续影响全球的数字艺术与创意编程。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/monogrid_ff_Kim_Asendorf_11102025.png?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762805647&s=da3c883c4a96db5dfd5c06bf31d2f10c", "imgTitle": "monogrid ff", "imgMeta": "Kim Asendorf · 2021 · NFT/链上", "theme": "进入每个口袋", "desc": "代码在链上运行，任何人都可以用浏览器生成、铸造、收藏。创作门槛归零——所以拥有一件作品的意义反而变重了。"}]}, {"name": "这是艺术吗", "question": "七十年过去，这个问题还没有答案。", "eras": [{"name": "Jasia Reichardt", "nat": "波兰/英国", "birth": "2025", "intro": "贾西娅·莱哈特是开创性策展人、作家和编辑，在艺术、科学与技术交汇处的工作帮助界定了控制论与数字艺术领域。她策划了1968年具有里程碑意义的《控制论的奇缘》展览。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Cybernetic_Serendipity_the_computer_and_the_arts_Jasia_Reichardt_11112025.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762916829&s=2115bebd329ee8ce16d821e49f4ced06", "imgTitle": "Cybernetic Serendipity 展览目录", "imgMeta": "Jasia Reichardt · 1968 · 伦敦ICA", "theme": "第一次公开亮相", "desc": "1968年伦敦《控制论的奇缘》，计算机艺术第一次大规模公开亮相。批评家嘲笑，观众困惑，但4万人来看了。"}, {"name": "Harold Cohen", "nat": "英国", "birth": "1928", "intro": "哈罗德·科恩是英国艺术家，从抽象绘画转向计算机艺术，成为最早探索人工智能创造潜力的先驱人物之一。从1970年代起，他开发了AARON——一个能够自主生成绘画的计算机程序，挑战了关于", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Plate_II_Harold_Cohen_11202025.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1763673223&s=ac60b0560de2c52b0a1472ee58feadc6", "imgTitle": "Plate II", "imgMeta": "Harold Cohen · 1968 · 画廊版画", "theme": "画廊的怀疑", "desc": "Harold Cohen 在Robert Fraser画廊展出——同一个画廊代理过杜尚。但他的代码生成作品让买家困惑：「签名在哪里？」"}, {"name": "Erick Calderon", "nat": "墨西哥", "birth": "2025", "intro": "埃里克·卡尔德隆（笔名Snowfro）是生成艺术家，也是帮助定义链上生成艺术的平台Art Blocks的创始人。他的项目《Chromie Squiggles》最初作为概念验证创作，", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Chromie_Squiggle_2583_Erick_Calderon_11102025.png?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1774059327&s=0b475d1343b7dea85ddf9fc8bf5f280d", "imgTitle": "Chromie Squiggle #2583", "imgMeta": "Erick Calderon · 2020 · Art Blocks", "theme": "NFT 时刻", "desc": "Art Blocks 把算法艺术变成了收藏品。Chromie Squiggle 单件成交数十万美元。问题从「这是艺术吗」变成「为什么这么贵」。"}, {"name": "Mario Klingemann", "nat": "德国", "birth": "2017", "intro": "马里奥·克林格曼（笔名Quasimondo）是AI艺术的先驱，使用神经网络和生成系统重新思考创造力与作者身份。他的作品探索机器如何感知、诠释和重构视觉世界，在艺术界和技术界都引发了", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Headwind_Mario_Klingemann_11102025.gif?w=650&h=650&q=90&auto=format&fit=crop&dm=1762805177&s=394a228aa194d18dc4c038374ce5de5b", "imgTitle": "Headwind", "imgMeta": "Mario Klingemann · 2017–2021 · GAN", "theme": "AI 争议顶点", "desc": "神经网络生成的肖像进入佳士得拍卖。全球版权诉讼爆发。这个从1965年就开始的问题，终于变成了所有人的问题。"}]}, {"name": "身体的消失", "question": "当身体退场，作品还带着谁的体温？", "eras": [{"name": "Desmond Paul Henry", "nat": "英国", "birth": "1921", "intro": "德斯蒙德·保罗·亨利（1921–2004）是英国艺术家和哲学家，1960年代以二战轰炸机模拟瞄准计算机的部件为核心，自行建造了三台机电绘图机器，创作出既令人惊叹又难以预测的有机线条", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Untitled_from_Drawing_Machine_I_Desmond_Paul_Henry_11102025.png?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762803119&s=ffb15859fc677c730fee2f293205e37e", "imgTitle": "Untitled from Drawing Machine I", "imgMeta": "Desmond Paul Henry · 1961 · 机械绘图机", "theme": "手直接参与", "desc": "废弃的轰炸机瞄准仪改装成绘图机。Desmond Paul Henry 用手调节齿轮和弹簧，身体的力道直接传入线条。"}, {"name": "Colette Stuebe Bangert", "nat": "美国", "birth": "2025", "intro": "科莱特·施图伯·班格特是美国艺术家，创作横跨绘画、素描、纺织品与早期计算机生成艺术。自1960年代末起，她与丈夫杰夫合作探索自然形态与算法系统的关系，借助传统媒介和定制软件演绎中西", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/CB_7-70_Colette_Stuebe_Bangert_Charles_Jeffries_Jeff_Bangert_11102025.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1774059435&s=250b7a06bfbf529777d0cac666c717a9", "imgTitle": "CB 7-70", "imgMeta": "Colette Stuebe Bangert · 1970 · 绘图仪", "theme": "手在屏幕后面", "desc": "Colette Bangert 自学 FORTRAN，为绘图仪写程序。身体退到了屏幕后面——但代码里仍然有她对草地和风的记忆。"}, {"name": "Paul Rickards", "nat": "美国", "birth": "2025", "intro": "保罗·里卡兹是生成艺术家，使用1980年代的笔式绘图仪以档案墨水创作算法绘图，编写定制Python代码驱动每台机器，以机械约束与人工编程的精确性相融合探索独特的视觉语言。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/PLOT_20200125220025_Paul_Rickards_11102025.png?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762804032&s=189bb231823bf945096e062fb02d89e6", "imgTitle": "PLOT 20200125", "imgMeta": "Paul Rickards · 2020 · 现代绘图仪", "theme": "手只剩下打字", "desc": "Paul Rickards 用 Python 编写算法，驱动1980年代的古董绘图仪。身体只剩下键盘上的手指——但他故意选择了有摩擦感的工具。"}, {"name": "Tom White", "nat": "新西兰", "birth": "2025", "intro": "汤姆·怀特（笔名Dribnet）是驻新西兰的艺术家和研究者，以神经网络创作探索机器如何观察和解释世界的作品，是当代AI艺术领域重要的批判性声音之一。", "src": "https://ragnar-digital.transforms.svdcdn.com/production/images/artwork/Perception_Engines_-_Printer_Tom_White_11102025.jpg?w=400&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1762802048&s=8b78bcd03747d5f969dd3e25a5e8fc68", "imgTitle": "Perception Engines – Printer", "imgMeta": "Tom White · 2018 · 神经网络", "theme": "身体完全退场", "desc": "神经网络反复「想象」打印机，直到另一个神经网络认出它。人类的手消失了。正因为如此——实物才重新变得有意义。"}]}];
+let eraT = 0, eraE = 0;
+
+function openEra() {
+  document.getElementById('era-overlay').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  if (!document.getElementById('era-theme-bar').innerHTML) eraInit();
+}
+function closeEra() {
+  document.getElementById('era-overlay').classList.remove('on');
+  document.body.style.overflow = '';
+}
+function eraSetTheme(i) {
+  eraT = i;
+  document.querySelectorAll('.era-tpill').forEach((b,j) => b.classList.toggle('on', j===i));
+  document.getElementById('era-question').textContent = ERA_THEMES[i].question;
+  eraRender();
+}
+function eraSetEra(i) {
+  eraE = i;
+  document.querySelectorAll('.era-etab').forEach((b,j) => b.classList.toggle('on', j===i));
+  eraRender();
+}
+function eraRender() {
+  const e   = ERA_THEMES[eraT].eras[eraE];
+  const era = ERA_ERAS[eraE];
+  // Image
+  const img = document.getElementById('era-img');
+  img.classList.remove('in');
+  setTimeout(() => { img.src = e.src || ''; }, 50);
+  document.getElementById('era-img-title').textContent = e.imgTitle || '';
+  document.getElementById('era-img-meta').textContent  = e.imgMeta  || '';
+  // Update active tab color
+  document.querySelectorAll('.era-etab').forEach((b,j) => {
+    b.style.setProperty('--era-ec', j===eraE ? era.color : 'var(--text-4)');
+  });
+  // Info
+  const info = document.getElementById('era-info-inner');
+  info.className = 'era-info-inner era-fade';
+  info.innerHTML = `
+    <div class="era-theme-label" style="color:${era.color}">${e.theme}</div>
+    <div class="era-desc">${e.desc}</div>
+    <div class="era-divider"></div>
+    <div class="era-artist-row">
+      <span class="era-artist-name">${e.name}</span>
+      <span class="era-artist-meta">${e.nat} · ${e.birth}</span>
+    </div>
+    <div class="era-artist-intro">${e.intro}</div>
+  `;
+  setTimeout(() => info.classList.remove('era-fade'), 400);
+}
+function eraInit() {
+  // Theme pills
+  document.getElementById('era-theme-bar').innerHTML = ERA_THEMES.map((t,i) =>
+    `<button class="era-tpill${i===0?' on':''}" onclick="eraSetTheme(${i})">${t.name}</button>`
+  ).join('');
+  // Era tabs
+  document.getElementById('era-tab-bar').innerHTML = ERA_ERAS.map((e,i) =>
+    `<div class="era-etab${i===0?' on':''}" onclick="eraSetEra(${i})">
+      <div class="era-etab-dot"></div>
+      <div class="era-etab-label">${e.label}</div>
+      <div class="era-etab-yr">${e.years}</div>
+    </div>`
+  ).join('');
+  document.getElementById('era-question').textContent = ERA_THEMES[0].question;
+  eraRender();
+}
+
 </script>
+
+<!-- ═══════════ ERA TOOL OVERLAY ═══════════ -->
+<div id="era-overlay">
+  <div class="era-hd">
+    <div class="era-hd-left">
+      <div class="era-eyebrow">想象机器 · 时代对比</div>
+      <div class="era-hd-title">七十年</div>
+    </div>
+    <div class="era-hd-right">
+      <div class="era-question" id="era-question"></div>
+      <button class="era-close" onclick="closeEra()">关　闭</button>
+    </div>
+  </div>
+  <div class="era-theme-bar" id="era-theme-bar"></div>
+  <div class="era-tab-bar" id="era-tab-bar"></div>
+  <div class="era-main">
+    <div class="era-img-wrap">
+      <img class="era-artwork-img" id="era-img" src="" alt=""
+        onload="this.classList.add('in')"
+        onerror="this.style.opacity=0.1">
+      <div class="era-img-cap">
+        <div class="era-img-cap-title" id="era-img-title"></div>
+        <div class="era-img-cap-meta"  id="era-img-meta"></div>
+      </div>
+    </div>
+    <div class="era-info">
+      <div class="era-info-inner" id="era-info-inner"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
