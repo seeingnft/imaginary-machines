@@ -1173,6 +1173,30 @@ footer {
   .tl-label-name { font-size: 0.78rem; }
 }
 
+/* ── Mobile (max 600px) ── */
+@media (max-width: 600px) {
+  #overlay {
+    padding: 0;
+  }
+  #modal {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    min-height: 100dvh;
+  }
+  .modal-hd { padding: 1.2rem 1.2rem 0.8rem; }
+  .modal-bd { padding: 1.2rem 1.2rem 1rem; }
+  .modal-ft { padding: 0.8rem 1.2rem 1.2rem; }
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+  .gallery-heading { font-size: 0.5rem; }
+  .modal-gallery { margin-top: 1.5rem; padding-top: 1.5rem; }
+  .gallery-line.title { font-size: 0.68rem; }
+  .gallery-line { font-size: 0.55rem; }
+}
+
 /* ════════════ ERA TOOL OVERLAY ════════════ */
 #era-overlay {
   display: none;
