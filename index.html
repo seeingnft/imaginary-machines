@@ -692,6 +692,7 @@ main {
   background: rgba(0,0,0,0.82);
   backdrop-filter: blur(6px);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 2.5rem;
   cursor: pointer;
 }
@@ -835,6 +836,7 @@ main {
   display: block;
   transition: opacity 0.2s;
   margin-bottom: 0.65rem;
+  min-height: 80px;
 }
 .gallery-item-img:hover { opacity: 0.8; }
 .gallery-item-lines {
@@ -1175,26 +1177,39 @@ footer {
 
 /* ── Mobile (max 600px) ── */
 @media (max-width: 600px) {
+  /* Overlay: no padding, full screen scroll */
   #overlay {
     padding: 0;
+    align-items: flex-start;
   }
+  /* Modal: full width, no border clipping */
   #modal {
     border-radius: 0;
     border-left: none;
     border-right: none;
-    min-height: 100dvh;
+    overflow: visible;
+    width: 100%;
   }
   .modal-hd { padding: 1.2rem 1.2rem 0.8rem; }
-  .modal-bd { padding: 1.2rem 1.2rem 1rem; }
-  .modal-ft { padding: 0.8rem 1.2rem 1.2rem; }
+  .modal-bd { padding: 1.2rem 1.2rem 1.5rem; overflow: visible; }
+  .modal-ft { padding: 0.8rem 1.2rem 2rem; }
+  /* Gallery: 2 columns on phone */
   .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
   }
-  .gallery-heading { font-size: 0.5rem; }
-  .modal-gallery { margin-top: 1.5rem; padding-top: 1.5rem; }
+  .gallery-heading { font-size: 0.5rem; margin-bottom: 1rem; }
+  .modal-gallery {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    display: block !important;
+    overflow: visible;
+  }
   .gallery-line.title { font-size: 0.68rem; }
   .gallery-line { font-size: 0.55rem; }
+  /* Ensure gallery items are visible */
+  .gallery-item { display: flex !important; flex-direction: column; }
+  .gallery-item-img { min-height: 100px; }
 }
 
 /* ════════════ ERA TOOL OVERLAY ════════════ */
@@ -5460,7 +5475,7 @@ function openModal(key) {
       const escapedSrc   = item.src.replace(/'/g,"\'");
       const escapedLines = JSON.stringify(lines).replace(/"/g,'&quot;');
       return `<div class="gallery-item" onclick="openLightbox('${escapedSrc}', ${escapedLines})">
-        <img class="gallery-item-img" src="${item.src}" alt="${item.alt||''}" loading="lazy" onerror="this.closest('.gallery-item').style.display='none'">
+        <img class="gallery-item-img" src="${item.src}" alt="${item.alt||''}" loading="eager" onerror="this.style.opacity='0.15';this.style.background='var(--paper3)'">
         <div class="gallery-item-lines">${linesHtml}</div>
       </div>`;
     }).join('');
@@ -5470,7 +5485,7 @@ function openModal(key) {
   }
 
   document.getElementById('overlay').classList.add('on');
-  document.body.style.overflow = 'hidden';
+  if (window.innerWidth > 600) document.body.style.overflow = 'hidden';
 }
 function closeModal() {
   document.getElementById('overlay').classList.remove('on');
